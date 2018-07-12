@@ -1,92 +1,94 @@
-  /**
- * espbutton.ino
- *
- *  Created by: Ameer Dawood
- *
- */
+/*
+* espbutton.ino
+*
+* Created by: Ameer Dawood
+*
+*/
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 
-#define USE_SERIAL Serial
-const int LED_PIN = 2; // this is the LED pin
+const int LED_PIN = D4;
+const int BUTTON_PIN = D8;
 
-#define IFTTT_URL "http://maker.ifttt.com/trigger/button_pressed/with/key/xxxxxxxxxxxxxxxxxxxxxx"
-
+#define WIFI_SSID "xxxxxxxxxx"
+#define WIFI_PASSWORD "xxxxxxxxxx"
+#define IFTTT_URL "https://maker.ifttt.com/trigger/button_pressed/with/key/xxxxxxxxxxxxxxxxxxxxxx"
+#define CERT_FINGERPRINT "C0 5D 08 5E E1 3E E0 66 F3 79 27 1A CA 1F FC 09 24 11 61 62"
 void setupWifi(void);
 
 bool postToIfttt(void);
 
 void setup() {
-
-    USE_SERIAL.begin(115200);
-    // USE_SERIAL.setDebugOutput(true);
-
-    // setup the led pin and turn it off
-    pinMode(LED_PIN, OUTPUT);
-    digitalWrite(LED_PIN, LOW);
-    
-    USE_SERIAL.println();
-    USE_SERIAL.println();
-    USE_SERIAL.println();
-    setupWifi();
+  Serial.begin(115200);
+  pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, LOW);
+  pinMode(BUTTON_PIN, INPUT);
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+  setupWifi();
 }
 
 void loop() {
-    if(WiFi.status() == WL_CONNECTED)
-    {   
-      if (postToIfttt())
-      {
+  if(WiFi.status() == WL_CONNECTED) {
+    if(digitalRead(BUTTON_PIN) == LOW){
+      Serial.println("Button pressed!");
+      digitalWrite(LED_PIN, HIGH);
+      delay(200);
+      digitalWrite(LED_PIN, LOW);
+      if (postToIfttt()) {
         digitalWrite(LED_PIN, HIGH);
+        Serial.println("Done!");
+      } else {
+        Serial.println("IFTTT did not work!");
+        digitalWrite(LED_PIN, HIGH);
+        delay(200);
+        digitalWrite(LED_PIN, LOW);
+        delay(200);
+        digitalWrite(LED_PIN, HIGH);
+        delay(200);
+        digitalWrite(LED_PIN, LOW);
+        delay(200);
+        digitalWrite(LED_PIN, HIGH);
+        delay(200);
+        digitalWrite(LED_PIN, LOW);
       }
+      delay(2000); // button debouncing
+      digitalWrite(LED_PIN, LOW);
     }
-    
-    delay(2000); // wait for 10 seconds for the next event
-    digitalWrite(LED_PIN, LOW); // turn off the LED
-    ESP.deepSleep(0); // Enter deep sleep. Sleep forever.
-    while(1)
-    {
-      __asm__("nop");
-    }
+  } else {
+    setupWifi();
+  }
 }
 
 
-bool postToIfttt()
-{
-        HTTPClient http;
-        
-        uint httpCode;
-        
-        http.begin(IFTTT_URL);
-        httpCode = http.GET();
-
-        http.end();
-        
-        if (httpCode == 200)
-        {
-          Serial.println("happy");
-          return true;
-        }
-        else
-        {
-          Serial.print(httpCode); //print error code to terminal
-          return false;
-        }
-
+bool postToIfttt() {
+  HTTPClient http;
+  uint httpCode;
+  http.begin(IFTTT_URL, CERT_FINGERPRINT);
+  httpCode = http.GET();
+  http.end();
+  if (httpCode == 200) {
+    Serial.println(httpCode);
+    return true;
+  } else {
+    Serial.println(httpCode);
+    return false;
+  }
 }
 
 
-void setupWifi()
-{
-      WiFi.begin("xxxxxxx", "xxxxxxx");
-  
-    while (WiFi.status() != WL_CONNECTED) {
-      delay(500);
-      Serial.print(".");
-    }
-
-    Serial.println("");
-    Serial.println("WiFi connected");  
-    Serial.println("IP address: ");
-    Serial.println(WiFi.localIP());
+void setupWifi() {
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+    delay(200);
+    digitalWrite(LED_PIN, HIGH);
+    delay(200);
+    digitalWrite(LED_PIN, LOW);
+  }
+  Serial.println("");
+  Serial.println("WiFi connected");  
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
 }
