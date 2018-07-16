@@ -8,8 +8,8 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 
-const int LED_PIN = D4;
-const int BUTTON_PIN = D8;
+const int LED_PIN = 0;
+const int BUTTON_PIN = 2;
 
 #define WIFI_SSID "xxxxxxxxxx"
 #define WIFI_PASSWORD "xxxxxxxxxx"
