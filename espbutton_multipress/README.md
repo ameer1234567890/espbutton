@@ -1,0 +1,1 @@
+This is a multi-press button. There are two states of button press, short press and long press. Different HTTP(S) requests can be made upon short press or long press of the button. There is also a feedback added where the LED lights up when the long press interval has been reached, allowing the user to easily determine a long press.
