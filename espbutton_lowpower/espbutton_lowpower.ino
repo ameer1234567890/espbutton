@@ -12,7 +12,8 @@ const int LED_PIN = 2;
 
 #define WIFI_SSID "xxxxxxxxxx"
 #define WIFI_PASSWORD "xxxxxxxxxx"
-#define IFTTT_URL "http://maker.ifttt.com/trigger/button_pressed/with/key/xxxxxxxxxxxxxxxxxxxxxx"
+#define IFTTT_URL "https://maker.ifttt.com/trigger/button_pressed/with/key/xxxxxxxxxxxxxxxxxxxxxx"
+#define CERT_FINGERPRINT "C0 5D 08 5E E1 3E E0 66 F3 79 27 1A CA 1F FC 09 24 11 61 62"
 
 void setupWifi(void);
 bool postToIfttt(void);
@@ -41,7 +42,7 @@ void loop() {
 bool postToIfttt() {
   HTTPClient http;
   uint httpCode;
-  http.begin(IFTTT_URL);
+  http.begin(IFTTT_URL, CERT_FINGERPRINT);
   httpCode = http.GET();
   http.end();
   Serial.print(httpCode);
