@@ -1,5 +1,5 @@
 /*
-* espbutton.ino
+* espbutton_simple.ino
 *
 * Created by: Ameer Dawood
 *
@@ -8,22 +8,21 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 
-const int LED_PIN = 0;
-const int BUTTON_PIN = 2;
+#define LED_PIN 0
+#define BUTTON_PIN 2
 
 #define WIFI_SSID "xxxxxxxxxx"
 #define WIFI_PASSWORD "xxxxxxxxxx"
 #define IFTTT_URL "https://maker.ifttt.com/trigger/button_pressed/with/key/xxxxxxxxxxxxxxxxxxxxxx"
 #define CERT_FINGERPRINT "C0 5D 08 5E E1 3E E0 66 F3 79 27 1A CA 1F FC 09 24 11 61 62"
-void setupWifi(void);
 
+void setupWifi(void);
 bool postToIfttt(void);
 
 void setup() {
   Serial.begin(115200);
   pinMode(LED_PIN, OUTPUT);
   digitalWrite(LED_PIN, LOW);
-  pinMode(BUTTON_PIN, INPUT);
   pinMode(BUTTON_PIN, INPUT_PULLUP);
   setupWifi();
 }
@@ -82,13 +81,21 @@ void setupWifi() {
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
-    delay(200);
     digitalWrite(LED_PIN, HIGH);
-    delay(200);
+    delay(50);
     digitalWrite(LED_PIN, LOW);
+    delay(50);
+    digitalWrite(LED_PIN, HIGH);
+    delay(50);
+    digitalWrite(LED_PIN, LOW);
+    delay(200);
   }
   Serial.println("");
   Serial.println("WiFi connected");  
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
+  delay(700);
+  digitalWrite(LED_PIN, HIGH);
+  delay(1000);
+  digitalWrite(LED_PIN, LOW);
 }

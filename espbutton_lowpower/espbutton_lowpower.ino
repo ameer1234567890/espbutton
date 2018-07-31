@@ -1,14 +1,14 @@
 /**
 * espbutton_lowpower.ino
 *
-*  Created by: Ameer Dawood
+* Created by: Ameer Dawood
 *
 */
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 
-const int LED_PIN = 2;
+#define LED_PIN 2
 
 #define WIFI_SSID "xxxxxxxxxx"
 #define WIFI_PASSWORD "xxxxxxxxxx"
@@ -45,22 +45,35 @@ bool postToIfttt() {
   http.begin(IFTTT_URL, CERT_FINGERPRINT);
   httpCode = http.GET();
   http.end();
-  Serial.print(httpCode);
   if (httpCode == 200) {
+    Serial.println(httpCode);
     return true;
   } else {
+    Serial.println(httpCode);
     return false;
   }
 }
 
 void setupWifi() {
-  WiFi.begin("xxxxxxx", "xxxxxxx");
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
+    digitalWrite(LED_PIN, HIGH);
+    delay(50);
+    digitalWrite(LED_PIN, LOW);
+    delay(50);
+    digitalWrite(LED_PIN, HIGH);
+    delay(50);
+    digitalWrite(LED_PIN, LOW);
+    delay(200);
   }
   Serial.println("");
   Serial.println("WiFi connected");  
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
+  delay(700);
+  digitalWrite(LED_PIN, HIGH);
+  delay(1000);
+  digitalWrite(LED_PIN, LOW);
 }
