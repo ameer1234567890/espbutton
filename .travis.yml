@@ -1,0 +1,24 @@
+sudo: false
+language: bash
+os:
+  - linux
+env:
+  matrix:
+    - BOARD="esp8266:esp8266:generic:CpuFrequency=80,FlashSize=1M0,FlashMode=qio,FlashFreq=80" IDE_VERSION=1.8.5
+before_install:
+  - /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_1.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :1 -ac -screen 0 1280x1024x16
+  - sleep 3
+  - export DISPLAY=:1.0
+install:
+  - wget http://downloads.arduino.cc/arduino-$IDE_VERSION-linux64.tar.xz
+  - tar xf arduino-$IDE_VERSION-linux64.tar.xz
+  - mv arduino-$IDE_VERSION $HOME/arduino_ide
+  - export PATH="$HOME/arduino_ide:$PATH"
+  - which arduino
+  - arduino --pref "boardsmanager.additional.urls=http://arduino.esp8266.com/stable/package_esp8266com_index.json" --save-prefs
+  - arduino --install-boards esp8266:esp8266
+  - arduino --board $BOARD --save-prefs
+script:
+  - arduino --verify $TRAVIS_BUILD_DIR/espbutton_simple/espbutton_simple.ino
+  - arduino --verify $TRAVIS_BUILD_DIR/espbutton_lowpower/espbutton_lowpower.ino
+  - arduino --verify $TRAVIS_BUILD_DIR/espbutton_multipress/espbutton_multipress.ino
