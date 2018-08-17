@@ -1,0 +1,18 @@
+platform:
+  - x86
+  - x64
+environment:
+  matrix:
+    - BOARD: 'esp8266:esp8266:generic:CpuFrequency=80,FlashSize=1M0,FlashMode=qio,FlashFreq=80'
+      IDE_VERSION: '1.8.5'
+install:
+  - ps: (New-Object Net.WebClient).DownloadFile("http://downloads.arduino.cc/arduino-$env:IDE_VERSION-windows.zip", "C:\projects\arduino.zip");
+  - ps: Expand-Archive "C:\projects\arduino.zip" -dest "C:\projects\arduino\";
+build_script:
+  - cmd: cd C:\projects\arduino\arduino-%IDE_VERSION%
+  - cmd: arduino_debug.exe --pref "boardsmanager.additional.urls=http://arduino.esp8266.com/stable/package_esp8266com_index.json" --save-prefs
+  - cmd: arduino_debug.exe --install-boards esp8266:esp8266
+  - cmd: arduino_debug.exe --board %BOARD% --save-prefs
+  - cmd: arduino_debug.exe --verify C:\projects\espbutton\espbutton_simple\espbutton_simple.ino
+  - cmd: arduino_debug.exe --verify C:\projects\espbutton\espbutton_lowpower\espbutton_lowpower.ino
+  - cmd: arduino_debug.exe --verify C:\projects\espbutton\espbutton_multipress\espbutton_multipress.ino
