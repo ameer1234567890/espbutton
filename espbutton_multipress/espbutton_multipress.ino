@@ -60,6 +60,7 @@ void loop() {
         if (postToIfttt(IFTTT_ON_URL)) {
           Serial.println("Done!");
           digitalWrite(LED_PIN, HIGH);
+          delay(500);
           digitalWrite(LED_PIN, LOW);
         } else {
           Serial.println("IFTTT did not work!");
@@ -80,6 +81,7 @@ void loop() {
         if (postToIfttt(IFTTT_OFF_URL)) {
           Serial.println("Done!");
           digitalWrite(LED_PIN, HIGH);
+          delay(500);
           digitalWrite(LED_PIN, LOW);
         } else {
           Serial.println("IFTTT did not work!");
