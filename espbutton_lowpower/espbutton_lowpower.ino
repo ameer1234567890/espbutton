@@ -13,7 +13,7 @@
 #define WIFI_SSID "xxxxxxxxxx"
 #define WIFI_PASSWORD "xxxxxxxxxx"
 #define IFTTT_URL "https://maker.ifttt.com/trigger/button_pressed/with/key/xxxxxxxxxxxxxxxxxxxxxx"
-#define CERT_FINGERPRINT "C0 5D 08 5E E1 3E E0 66 F3 79 27 1A CA 1F FC 09 24 11 61 62"
+#define CERT_FINGERPRINT "aa 75 cb 41 2e d5 f9 97 ff 5d a0 8b 7d ac 12 21 08 4b 00 8c"
 
 void setupWifi(void);
 bool postToIfttt(void);
