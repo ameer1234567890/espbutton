@@ -7,14 +7,18 @@
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
+#include "Secrets.h"
+
+/*
+Secrets.h file should contain data as below:
+#define WIFI_SSID "xxxxxxxxxx"
+#define WIFI_PASSWORD "xxxxxxxxxx"
+#define IFTTT_URL "https://maker.ifttt.com/trigger/button_on/with/key/xxxxxxxxxxxxxxxxxxxxxx"
+#define CERT_FINGERPRINT "9a 11 97 ad cd 4f d9 df e4 8f 1b 01 5f 4f 69 d3 87 ea d9 4b"
+*/
 
 #define LED_PIN 0
 #define BUTTON_PIN 2
-
-#define WIFI_SSID "xxxxxxxxxx"
-#define WIFI_PASSWORD "xxxxxxxxxx"
-#define IFTTT_URL "https://maker.ifttt.com/trigger/button_pressed/with/key/xxxxxxxxxxxxxxxxxxxxxx"
-#define CERT_FINGERPRINT "aa 75 cb 41 2e d5 f9 97 ff 5d a0 8b 7d ac 12 21 08 4b 00 8c"
 
 void setupWifi(void);
 bool postToIfttt(void);
