@@ -8,7 +8,8 @@ install:
   - go get -u github.com/arduino/arduino-cli
   - which arduino-cli
   - arduino-cli core update-index
-  - arduino-cli core install esp8266:esp8266
+  - arduino-cli core install esp8266
+  - arduino-cli core install esp8266:esp8266:generic
   - touch $TRAVIS_BUILD_DIR/espbutton_simple/Secrets.h
   - touch $TRAVIS_BUILD_DIR/espbutton_lowpower/Secrets.h
   - touch $TRAVIS_BUILD_DIR/espbutton_multipress/Secrets.h
