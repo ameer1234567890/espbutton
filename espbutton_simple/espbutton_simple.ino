@@ -66,7 +66,7 @@ void loop() {
 bool postToIfttt() {
   HTTPClient http;
   uint httpCode;
-  http.begin(IFTTT_URL, CERT_FINGERPRINT);
+  http.begin(IFTTT_URL);
   httpCode = http.GET();
   http.end();
   if (httpCode == 200) {

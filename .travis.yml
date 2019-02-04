@@ -3,24 +3,16 @@ os:
   - linux
 env:
   matrix:
-    - BOARD="esp8266:esp8266:generic" IDE_VERSION=1.8.8
-#before_install:
-  #- /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_1.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :1 -ac -screen 0 1280x1024x16
-  #- sleep 3
-  #- export DISPLAY=:1.0
+    - BOARD="esp8266:esp8266:generic" CLI_VERSION="0.2.1-alpha.preview"
 install:
-  - wget http://downloads.arduino.cc/arduino-$IDE_VERSION-linux64.tar.xz
-  - tar xf arduino-$IDE_VERSION-linux64.tar.xz
-  - mv arduino-$IDE_VERSION $HOME/arduino_ide
-  - export PATH="$HOME/arduino_ide:$PATH"
-  - which arduino
-  - arduino --pref "boardsmanager.additional.urls=http://arduino.esp8266.com/versions/2.4.2/package_esp8266com_index.json" --save-prefs
-  - arduino --install-boards esp8266:esp8266
-  - arduino --board $BOARD --save-prefs
+  - go get -u github.com/arduino/arduino-cli
+  - which arduino-cli
+  - arduino-cli core update-index
+  - arduino-cli core install esp8266:esp8266
   - touch $TRAVIS_BUILD_DIR/espbutton_simple/Secrets.h
   - touch $TRAVIS_BUILD_DIR/espbutton_lowpower/Secrets.h
   - touch $TRAVIS_BUILD_DIR/espbutton_multipress/Secrets.h
 script:
-  - arduino --verify $TRAVIS_BUILD_DIR/espbutton_simple/espbutton_simple.ino
-  - arduino --verify $TRAVIS_BUILD_DIR/espbutton_lowpower/espbutton_lowpower.ino
-  - arduino --verify $TRAVIS_BUILD_DIR/espbutton_multipress/espbutton_multipress.ino
+  - arduino-cli compile --fqbn $BOARD $TRAVIS_BUILD_DIR/espbutton_simple/espbutton_simple.ino
+  - arduino-cli compile --fqbn $BOARD $TRAVIS_BUILD_DIR/espbutton_lowpower/espbutton_lowpower.ino
+  - arduino-cli compile --fqbn $BOARD $TRAVIS_BUILD_DIR/espbutton_multipress/espbutton_multipress.ino
