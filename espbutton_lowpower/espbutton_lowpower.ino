@@ -9,13 +9,12 @@
 #include <ESP8266HTTPClient.h>
 #include "Secrets.h"
 
-/*
-Secrets.h file should contain data as below:
+/* Secrets.h file should contain data as below: */
+#ifndef WIFI_SSID
 #define WIFI_SSID "xxxxxxxxxx"
 #define WIFI_PASSWORD "xxxxxxxxxx"
-#define IFTTT_URL "https://maker.ifttt.com/trigger/button_pressed/with/key/xxxxxxxxxxxxxxxxxxxxxx"
-#define CERT_FINGERPRINT "9a 11 97 ad cd 4f d9 df e4 8f 1b 01 5f 4f 69 d3 87 ea d9 4b"
-*/
+#define IFTTT_URL "http://maker.ifttt.com/trigger/button_pressed/with/key/xxxxxxxxxxxxxxxxxxxxxx"
+#endif
 
 #define LED_PIN 2
 
@@ -46,7 +45,7 @@ void loop() {
 bool postToIfttt() {
   HTTPClient http;
   uint httpCode;
-  http.begin(IFTTT_URL, CERT_FINGERPRINT);
+  http.begin(IFTTT_URL);
   httpCode = http.GET();
   http.end();
   if (httpCode == 200) {
