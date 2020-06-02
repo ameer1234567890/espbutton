@@ -13,11 +13,14 @@ before_install:
   - export PATH=$PATH:$HOME/bin
   - arduino-cli core update-index
   - arduino-cli core install esp8266:esp8266
-  - buildExampleSketchEsp8266() { arduino-cli compile --fqbn esp8266:esp8266:generic $PWD/$1; }
+  - buildSketchEsp8266() { arduino-cli compile --fqbn esp8266:esp8266:generic $PWD/$1; }
 install:
   - mkdir -p $HOME/Arduino/libraries
   - ln -s $PWD $HOME/Arduino/libraries/.
+  - touch espbutton_lowpower/Secrets.h
+  - touch espbutton_multipress/Secrets.h
+  - touch espbutton_simple/Secrets.h
 script:
-  - buildExampleSketchEsp8266 "espbutton_lowpower"
-  - buildExampleSketchEsp8266 "espbutton_multipress"
-  - buildExampleSketchEsp8266 "espbutton_simple"
+  - buildSketchEsp8266 "espbutton_lowpower"
+  - buildSketchEsp8266 "espbutton_multipress"
+  - buildSketchEsp8266 "espbutton_simple"
